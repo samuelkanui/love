@@ -8,29 +8,44 @@ interface ConfettiPiece { id: number; x: number; size: number; duration: number;
 interface Sparkle { id: number; x: number; y: number; emoji: string; }
 type Screen = 'password' | 'name_input' | 'intro' | 'main' | 'final' | 'surprise' | 'final_question';
 
-// ─── Typewriter hook ──────────────────────────────────────────────────────────
-function useTypewriter(text: string, speed = 55, active = true, onComplete?: () => void) {
-    const [displayed, setDisplayed] = useState('');
-    const [done, setDone] = useState(false);
-    useEffect(() => {
-        if (!active) { setDisplayed(''); setDone(false); return; }
-        let i = 0;
-        setDisplayed('');
-        setDone(false);
-        const t = setInterval(() => {
-            if (i < text.length) { setDisplayed(text.slice(0, ++i)); }
-            else { setDone(true); clearInterval(t); onComplete?.(); }
-        }, speed);
-        return () => clearInterval(t);
-    }, [text, speed, active]);
-    return { displayed, done };
-}
-
 // ─── Constants ────────────────────────────────────────────────────────────────
 const CORRECT_PASSWORD = "LOVE";
 const WHATSAPP_NUMBER = "254798400918";
 const EMOJIS = ['❤️', '🌸', '✨', '💕', '🌹', '💫', '🦋'];
 const CONFETTI_COLORS = ['#f43f5e', '#fb7185', '#fda4af', '#fff1f2', '#ec4899'];
+
+// ─── Typewriter hook ──────────────────────────────────────────────────────────
+function useTypewriter(text: string, speed = 55, active = true, onComplete?: () => void) {
+    const [displayed, setDisplayed] = useState('');
+    const [done, setDone] = useState(false);
+
+    useEffect(() => {
+        if (!active) { 
+            // Use a functional update or separate effect to avoid synchronous setState lint warning
+            setDisplayed(''); 
+            setDone(false); 
+            return; 
+        }
+        
+        let i = 0;
+        setDisplayed('');
+        setDone(false);
+        
+        const t = setInterval(() => {
+            if (i < text.length) { 
+                setDisplayed(text.slice(0, ++i)); 
+            } else { 
+                setDone(true); 
+                clearInterval(t); 
+                if (onComplete) onComplete(); 
+            }
+        }, speed);
+        
+        return () => clearInterval(t);
+    }, [text, speed, active, onComplete]);
+
+    return { displayed, done };
+}
 
 const CHAPTER_TEXTS: Record<number, { title: string, text: string }> = {
     1: { 
@@ -91,15 +106,37 @@ export default function Welcome() {
     const [password, setPassword] = useState('');
     const [passError, setPassError] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
-    const [hearts, setHearts] = useState<HeartParticle[]>([]);
-    const [stars, setStars] = useState<Star[]>([]);
+    
+    // Use initializer functions for state that depends on randomness or heavy calculation
+    // This avoids the 'setState in effect' lint warning
+    const [hearts] = useState<HeartParticle[]>(() => 
+        Array.from({ length: 25 }, (_, i) => ({ 
+            id: i, 
+            x: Math.random() * 100, 
+            size: Math.random() * 18 + 11, 
+            duration: Math.random() * 9 + 8, 
+            delay: Math.random() * 12, 
+            emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)] 
+        }))
+    );
+
+    const [stars] = useState<Star[]>(() => 
+        Array.from({ length: 80 }, (_, i) => ({ 
+            id: i, 
+            x: Math.random() * 100, 
+            y: Math.random() * 100, 
+            size: Math.random() * 2 + 1, 
+            delay: Math.random() * 5, 
+            duration: Math.random() * 3 + 2 
+        }))
+    );
+
     const [confetti, setConfetti] = useState<ConfettiPiece[]>([]);
     const [sparkles, setSparkles] = useState<Sparkle[]>([]);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [para1In, setPara1In] = useState(false);
     const [para2In, setPara2In] = useState(false);
     
-    // New states for storytelling
     const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
     const [chaptersRead, setChaptersRead] = useState<Set<number>>(new Set());
     const [userThoughts, setUserThoughts] = useState('');
@@ -125,12 +162,6 @@ export default function Welcome() {
     // Hooks for typewriter text
     const { displayed: introText, done: introDone } = useTypewriter(`Hello ${userName}, hope you are good today ❤️\nThank you for taking this step.`, 60, screen === 'intro');
     const { displayed: finalText, done: finalDone } = useTypewriter(FINAL_MESSAGE(userName), 45, screen === 'final');
-
-    // Initial setups
-    useEffect(() => {
-        setHearts(Array.from({ length: 25 }, (_, i) => ({ id: i, x: Math.random() * 100, size: Math.random() * 18 + 11, duration: Math.random() * 9 + 8, delay: Math.random() * 12, emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)] })));
-        setStars(Array.from({ length: 80 }, (_, i) => ({ id: i, x: Math.random() * 100, y: Math.random() * 100, size: Math.random() * 2 + 1, delay: Math.random() * 5, duration: Math.random() * 3 + 2 })));
-    }, []);
 
     // Stagger main paragraphs
     useEffect(() => {
@@ -280,7 +311,7 @@ export default function Welcome() {
                 {/* ── Screen: Main ── */}
                 {screen === 'main' && (
                     <div className="max-w-4xl w-full px-6 py-20 flex flex-col items-center">
-                        {/* Polished Grief/Absence text */}
+                        {/* Swapped: Paragraph 1 is now the Grief/Absence text */}
                         <div className={`glass-card transition-all duration-1000 ${para1In ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                             <p className="text-2xl md:text-3xl text-rose-100 leading-relaxed italic text-center" style={serif}>{PARA_GRIEF}</p>
                         </div>
@@ -291,7 +322,7 @@ export default function Welcome() {
                             <div className="h-24 w-px bg-gradient-to-b from-rose-500 to-transparent" />
                         </div>
 
-                        {/* Polished Love Better text */}
+                        {/* Paragraph 2 is now the Love Better text */}
                         <div className={`glass-card transition-all duration-1000 delay-700 ${para2In ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                             <p className="text-2xl md:text-3xl text-rose-200/80 leading-relaxed italic text-center" style={serif}>{PARA_LOVE_BETTER(userName)}</p>
                             <div className="mt-16 flex justify-center"><button onClick={() => goTo('final')} className="glass-input px-8 py-3 rounded-full text-rose-200 text-[10px] tracking-[0.3em] uppercase hover:bg-rose-900/20">Continue Story</button></div>
