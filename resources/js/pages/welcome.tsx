@@ -15,34 +15,40 @@ const EMOJIS = ['❤️', '🌸', '✨', '💕', '🌹', '💫', '🦋'];
 const CONFETTI_COLORS = ['#f43f5e', '#fb7185', '#fda4af', '#fff1f2', '#ec4899'];
 
 // ─── Typewriter hook ──────────────────────────────────────────────────────────
+// Uses textIndex state so that setState is ONLY ever called inside the interval
+// callback or the cleanup function — never synchronously in the effect body.
 function useTypewriter(text: string, speed = 55, active = true, onComplete?: () => void) {
-    const [displayed, setDisplayed] = useState('');
-    const [done, setDone] = useState(false);
+    const [textIndex, setTextIndex] = useState(0);
+    const onCompleteRef = useRef(onComplete);
+
+    // Keep the callback ref fresh without re-running the main effect
+    useEffect(() => {
+        onCompleteRef.current = onComplete;
+    });
 
     useEffect(() => {
-        if (!active) { 
-            // Use a functional update or separate effect to avoid synchronous setState lint warning
-            setDisplayed(''); 
-            setDone(false); 
-            return; 
-        }
-        
-        let i = 0;
-        setDisplayed('');
-        setDone(false);
-        
+        if (!active) return;
+
         const t = setInterval(() => {
-            if (i < text.length) { 
-                setDisplayed(text.slice(0, ++i)); 
-            } else { 
-                setDone(true); 
-                clearInterval(t); 
-                if (onComplete) onComplete(); 
-            }
+            setTextIndex((i) => {
+                const next = i + 1;
+                if (next >= text.length) {
+                    clearInterval(t);
+                    onCompleteRef.current?.();
+                }
+                return next;
+            });
         }, speed);
-        
-        return () => clearInterval(t);
-    }, [text, speed, active, onComplete]);
+
+        // Cleanup: clear interval and reset index for next activation
+        return () => {
+            clearInterval(t);
+            setTextIndex(0);
+        };
+    }, [text, speed, active]);
+
+    const displayed = active ? text.slice(0, textIndex) : '';
+    const done = active && textIndex >= text.length;
 
     return { displayed, done };
 }
