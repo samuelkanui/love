@@ -304,10 +304,10 @@ export default function Welcome() {
 
                 {/* ── Screen: Intro ── */}
                 {screen === 'intro' && (
-                    <div className="max-w-2xl w-full px-6 text-center">
+                    <div className="max-w-2xl w-full px-2 text-center">
                         <div className="glass-card">
-                            <div className="mb-12 min-h-[120px]" style={serif}>
-                                {introText.split('\n').map((line, i) => <p key={i} className={`${i === 0 ? 'text-4xl text-rose-100' : 'text-2xl text-rose-200/70 italic'} mb-4 leading-relaxed`}>{line}</p>)}
+                            <div className="mb-8 md:mb-12 min-h-[120px]" style={serif}>
+                                {introText.split('\n').map((line, i) => <p key={i} className={`${i === 0 ? 'text-2xl md:text-4xl text-rose-100 font-bold' : 'text-lg md:text-2xl text-rose-200/70 italic'} mb-4 leading-relaxed`}>{line}</p>)}
                                 {!introDone && <span className="cursor-blink text-rose-500 text-2xl">|</span>}
                             </div>
                             {introDone && <button onClick={startJourney} className="btn-glow px-12 py-4 bg-rose-600 rounded-full text-white tracking-[0.2em] uppercase text-xs hover:bg-rose-500 transition-all scale-up-center">Begin the Journey</button>}
@@ -317,47 +317,47 @@ export default function Welcome() {
 
                 {/* ── Screen: Main ── */}
                 {screen === 'main' && (
-                    <div className="max-w-4xl w-full px-6 py-20 flex flex-col items-center">
+                    <div className="max-w-4xl w-full px-2 py-12 md:py-20 flex flex-col items-center">
                         {/* Swapped: Paragraph 1 is now the Grief/Absence text */}
                         <div className={`glass-card transition-all duration-1000 ${para1In ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                            <p className="text-2xl md:text-3xl text-rose-100 leading-relaxed italic text-center" style={serif}>{PARA_GRIEF}</p>
+                            <p className="text-xl md:text-3xl text-rose-100 leading-relaxed italic text-center" style={serif}>{PARA_GRIEF}</p>
                         </div>
 
                         {/* Timeline */}
-                        <div className={`my-16 flex flex-col items-center gap-4 transition-all duration-1000 delay-500 ${para2In ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className={`my-12 md:my-16 flex flex-col items-center gap-4 transition-all duration-1000 delay-500 ${para2In ? 'opacity-100' : 'opacity-0'}`}>
                             <div className="timeline-dot" />
-                            <div className="h-24 w-px bg-gradient-to-b from-rose-500 to-transparent" />
+                            <div className="h-16 md:h-24 w-px bg-gradient-to-b from-rose-500 to-transparent" />
                         </div>
 
                         {/* Paragraph 2 is now the Love Better text */}
                         <div className={`glass-card transition-all duration-1000 delay-700 ${para2In ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                            <p className="text-2xl md:text-3xl text-rose-200/80 leading-relaxed italic text-center" style={serif}>{PARA_LOVE_BETTER(userName)}</p>
-                            <div className="mt-16 flex justify-center"><button onClick={() => goTo('final')} className="glass-input px-8 py-3 rounded-full text-rose-200 text-[10px] tracking-[0.3em] uppercase hover:bg-rose-900/20">Continue Story</button></div>
+                            <p className="text-xl md:text-3xl text-rose-200/80 leading-relaxed italic text-center" style={serif}>{PARA_LOVE_BETTER(userName)}</p>
+                            <div className="mt-12 md:mt-16 flex justify-center"><button onClick={() => goTo('final')} className="glass-input px-8 py-3 rounded-full text-rose-200 text-[10px] tracking-[0.3em] uppercase hover:bg-rose-900/20">Continue Story</button></div>
                         </div>
                     </div>
                 )}
 
                 {/* ── Screen: Final ── */}
                 {screen === 'final' && (
-                    <div className="max-w-3xl w-full px-6 text-center">
+                    <div className="max-w-3xl w-full px-2 text-center">
                         <div className="glass-card">
-                            <div className="mb-12 text-rose-100 text-2xl md:text-3xl leading-relaxed whitespace-pre-wrap" style={serif}>{finalText}{!finalDone && <span className="cursor-blink text-rose-500">|</span>}</div>
-                            {finalDone && <div className="fade-in-up mt-12"><button onClick={triggerSurprise} className="btn-glow px-10 py-4 bg-gradient-to-r from-rose-600 to-purple-600 rounded-full text-white text-xs tracking-[0.3em] uppercase">Open Surprise ❤️</button></div>}
+                            <div className="mb-8 md:mb-12 text-rose-100 text-xl md:text-3xl leading-relaxed whitespace-pre-wrap italic" style={serif}>{finalText}{!finalDone && <span className="cursor-blink text-rose-500">|</span>}</div>
+                            {finalDone && <div className="fade-in-up mt-8 md:mt-12"><button onClick={triggerSurprise} className="btn-glow px-10 py-4 bg-gradient-to-r from-rose-600 to-purple-600 rounded-full text-white text-xs tracking-[0.3em] uppercase">Open Surprise ❤️</button></div>}
                         </div>
                     </div>
                 )}
 
                 {/* ── Screen: Surprise (Chapters) ── */}
                 {screen === 'surprise' && (
-                    <div className="max-w-5xl w-full px-6 py-20 text-center flex flex-col items-center">
-                        <div className="glass-card mb-20 w-full">
-                            <h1 className="text-6xl md:text-8xl mb-8 animate-bounce">🎊</h1>
-                            <h2 className="text-4xl md:text-6xl text-rose-100 mb-6" style={serif}>Our Story, Chapter by Chapter</h2>
-                            <p className="text-rose-200/70 text-lg tracking-[0.2em] uppercase" style={sans}>Click each polaroid to relive our memories</p>
+                    <div className="max-w-5xl w-full px-4 py-12 md:py-20 text-center flex flex-col items-center">
+                        <div className="glass-card mb-12 md:mb-20 w-full">
+                            <h1 className="text-4xl md:text-8xl mb-6 animate-bounce">🎊</h1>
+                            <h2 className="text-3xl md:text-6xl text-rose-100 mb-6" style={serif}>Our Story, Chapter by Chapter</h2>
+                            <p className="text-rose-200/70 text-sm md:text-lg tracking-[0.2em] uppercase" style={sans}>Relive our memories</p>
                         </div>
-                        <div className="flex flex-wrap justify-center gap-12 mt-10">
+                        <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-12 mt-10">
                             {POLAROIDS.map((p, i) => (
-                                <div key={p.id} onClick={() => openChapter(p.id)} className={`polaroid w-64 md:w-80 fade-in-up ${chaptersRead.has(p.id) ? 'grayscale-[0.5]' : ''}`} style={{ '--rotation': p.rotation, transitionDelay: `${i * 200}ms` } as any}>
+                                <div key={p.id} onClick={() => openChapter(p.id)} className={`polaroid w-72 md:w-80 fade-in-up ${chaptersRead.has(p.id) ? 'grayscale-[0.5]' : ''}`} style={{ '--rotation': p.rotation, transitionDelay: `${i * 200}ms` } as any}>
                                     <img src={p.src} alt={`Polaroid ${p.id}`} />
                                     <p className="mt-4 text-gray-800 text-xl" style={serif}>Chapter {p.id}</p>
                                     {chaptersRead.has(p.id) && <span className="absolute top-2 right-2 text-rose-500">❤️</span>}
@@ -365,7 +365,7 @@ export default function Welcome() {
                             ))}
                         </div>
                         {chaptersRead.size === 3 && (
-                            <div className="mt-24 fade-in-up">
+                            <div className="mt-16 md:mt-24 fade-in-up">
                                 <button onClick={() => goTo('final_question')} className="btn-glow px-12 py-5 bg-gradient-to-r from-rose-600 to-rose-400 rounded-full text-white text-sm tracking-[0.3em] uppercase font-bold">The Second Surprise ✨</button>
                             </div>
                         )}
