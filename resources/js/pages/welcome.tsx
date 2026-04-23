@@ -80,9 +80,6 @@ const PARA_GRIEF =
 const PARA_LOVE_BETTER = (name: string) => 
     `If only you knew, ${name}, how many nights I have stayed up thinking of how to love you better — not changing who I am, but just trimming the parts that could hurt you. I am learning your language and I am learning my bad habits. I want to be a place of peace for you. I want to show up as the most patient, present, and honest version of me. You deserve a love that does not make you guess, and a partner who keeps getting better at loving you. I am trying — because you are worth trying for, every single day.`;
 
-const PARA_TRANSITION = 
-    `I know where we left things... and I know it wasn't always as perfect as it should have been. But since I can't be there in person right now to express everything in my heart, I created this short story for you. Please, take your time with it. I hope you can feel the love I poured into every part of this journey, and I truly hope you love it.`;
-
 const FINAL_MESSAGE = (name: string) => 
     `You know, ${name}, I may not tell you this every day — but I truly cherish what we have. I never want to lose this bond. It's always been you, babe — and it will always be you.\n\nMy hope and my prayer is that at the end of our lives, we'll look at each other and know this was worth it. That you'll say I helped you become the most authentic version of yourself… and that, even then, I'm still your favorite person. ❤️`;
 
