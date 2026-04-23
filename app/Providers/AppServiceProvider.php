@@ -24,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        // Handle Vercel's read-only filesystem
+        if (config('app.env') === 'production' && env('VERCEL')) {
+            $this->app->useStoragePath('/tmp');
+        }
     }
 
     /**
