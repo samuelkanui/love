@@ -80,6 +80,9 @@ const PARA_GRIEF =
 const PARA_LOVE_BETTER = (name: string) => 
     `If only you knew, ${name}, how many nights I have stayed up thinking of how to love you better — not changing who I am, but just trimming the parts that could hurt you. I am learning your language and I am learning my bad habits. I want to be a place of peace for you. I want to show up as the most patient, present, and honest version of me. You deserve a love that does not make you guess, and a partner who keeps getting better at loving you. I am trying — because you are worth trying for, every single day.`;
 
+const PARA_TRANSITION = 
+    `I know where we left things... and I know it wasn't always as perfect as it should have been. But since I can't be there in person right now to express everything in my heart, I created this short story for you. Please, take your time with it. I hope you can feel the love I poured into every part of this journey, and I truly hope you love it.`;
+
 const FINAL_MESSAGE = (name: string) => 
     `You know, ${name}, I may not tell you this every day — but I truly cherish what we have. I never want to lose this bond. It's always been you, babe — and it will always be you.\n\nMy hope and my prayer is that at the end of our lives, we'll look at each other and know this was worth it. That you'll say I helped you become the most authentic version of yourself… and that, even then, I'm still your favorite person. ❤️`;
 
@@ -142,6 +145,7 @@ export default function Welcome() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [para1In, setPara1In] = useState(false);
     const [para2In, setPara2In] = useState(false);
+    const [para3In, setPara3In] = useState(false);
     
     const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
     const [chaptersRead, setChaptersRead] = useState<Set<number>>(new Set());
@@ -174,7 +178,8 @@ export default function Welcome() {
         if (screen !== 'main') return;
         const t1 = setTimeout(() => setPara1In(true), 400);
         const t2 = setTimeout(() => setPara2In(true), 1500);
-        return () => { clearTimeout(t1); clearTimeout(t2); };
+        const t3 = setTimeout(() => setPara3In(true), 2600);
+        return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }, [screen]);
 
     const goTo = useCallback((next: Screen) => {
@@ -331,6 +336,17 @@ export default function Welcome() {
                         {/* Paragraph 2 is now the Love Better text */}
                         <div className={`glass-card transition-all duration-1000 delay-700 ${para2In ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                             <p className="text-2xl md:text-3xl text-rose-200/80 leading-relaxed italic text-center" style={serif}>{PARA_LOVE_BETTER(userName)}</p>
+                        </div>
+
+                        {/* Timeline 2 */}
+                        <div className={`my-16 flex flex-col items-center gap-4 transition-all duration-1000 delay-1000 ${para3In ? 'opacity-100' : 'opacity-0'}`}>
+                            <div className="timeline-dot" />
+                            <div className="h-24 w-px bg-gradient-to-b from-rose-500 to-transparent" />
+                        </div>
+
+                        {/* NEW Paragraph 3: Transition to stories */}
+                        <div className={`glass-card transition-all duration-1000 delay-1000 ${para3In ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                            <p className="text-2xl md:text-3xl text-rose-300/90 leading-relaxed italic text-center" style={serif}>{PARA_TRANSITION}</p>
                             <div className="mt-16 flex justify-center"><button onClick={() => goTo('final')} className="glass-input px-8 py-3 rounded-full text-rose-200 text-[10px] tracking-[0.3em] uppercase hover:bg-rose-900/20">Continue Story</button></div>
                         </div>
                     </div>
