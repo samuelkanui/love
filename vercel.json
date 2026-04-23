@@ -1,0 +1,15 @@
+{
+    "functions": {
+        "api/index.php": {
+            "runtime": "vercel-php@0.7.2"
+        }
+    },
+    "buildCommand": "npm install && npm run build && composer install --no-dev --optimize-autoloader",
+    "routes": [
+        { "src": "/build/(.*)", "dest": "/public/build/$1" },
+        { "src": "/images/(.*)", "dest": "/public/images/$1" },
+        { "src": "/music\\.mp3", "dest": "/public/music.mp3" },
+        { "src": "/(favicon\\.ico|favicon\\.svg|apple-touch-icon\\.png|robots\\.txt)", "dest": "/public/$1" },
+        { "src": "/(.*)", "dest": "/api/index.php" }
+    ]
+}
