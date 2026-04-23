@@ -1,9 +1,10 @@
 {
     "functions": {
-        "api/index.php": {
+        "api/*.php": {
             "runtime": "vercel-php@0.7.2"
         }
     },
+    "outputDirectory": ".",
     "buildCommand": "npm install && npm run build",
     "routes": [
         { "src": "/build/(.*)", "dest": "/public/build/$1" },
