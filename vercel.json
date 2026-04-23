@@ -4,7 +4,7 @@
             "runtime": "vercel-php@0.7.2"
         }
     },
-    "buildCommand": "npm install && npm run build && composer install --no-dev --optimize-autoloader",
+    "buildCommand": "npm install && npm run build",
     "routes": [
         { "src": "/build/(.*)", "dest": "/public/build/$1" },
         { "src": "/images/(.*)", "dest": "/public/images/$1" },
