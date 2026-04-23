@@ -272,7 +272,7 @@ export default function Welcome() {
                 </div>
             )}
 
-            <div className="relative z-10 min-h-screen flex items-center justify-center transition-opacity duration-500" style={{ opacity: visible ? 1 : 0 }}>
+            <div className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center px-4 py-12 md:py-20 transition-opacity duration-500" style={{ opacity: visible ? 1 : 0 }}>
                 
                 {/* ── Screen: Password ── */}
                 {screen === 'password' && (
