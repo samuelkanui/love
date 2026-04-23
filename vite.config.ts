@@ -20,6 +20,7 @@ export default defineConfig({
         tailwindcss(),
         wayfinder({
             formVariants: true,
+            generate: !process.env.VERCEL, // Disable generation on Vercel
         }),
     ],
 });
